@@ -4,6 +4,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main (String[] args)
     {
@@ -15,7 +17,12 @@ public class Main {
         MongoDatabase database = mongoClient.getDatabase("Hugh-Mungus");
         MongoCollection<Document> recipesCol = database.getCollection("Awesome Collection");
 
+        Recipe recipe = new Recipe("Burger", Arrays.asList(new Ingredient("Beef", 1.5, "lb"),
+                new Ingredient("Buns", 1, "pack"),
+                new Ingredient("Cheese", 1, "slice")));
+        System.out.print(recipe);
 
+        recipesCol.insertOne(recipe.documentify());
 
         /*
          David's Database work here...
