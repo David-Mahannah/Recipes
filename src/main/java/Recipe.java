@@ -9,18 +9,35 @@ import java.util.Scanner;
 public class Recipe
 {
     private String name;
-    private List<String> flavors;
     private String region;
+    private List<String> flavors;
     private List<Ingredient> ingredients;
 
+    /*-------------------Constructors-----------------*/
+    public Recipe(){
+        name = null;
+        region = null;
+        flavors = new ArrayList<>();
+        ingredients = new ArrayList<>();
+    }
+
     public Recipe(String name, List<Ingredient> ingredients){
-        // TODO: Add flavor/region or Add another class or database it ??
         this.name = name;
         this.ingredients = ingredients;
 
-        flavors = new ArrayList<>();
         region = null;
+        flavors = new ArrayList<>();
     }
+
+    public Recipe(String name, String region, List<String> flavors, List<Ingredient> ingredients){
+        this.name = name;
+        this.ingredients = ingredients;
+
+        this.flavors = flavors;
+        this.region = region;
+    }
+
+    /*-------------------Functions-----------------*/
 
     // Convert Recipe object to Document type to store in database
     public Document documentify()
@@ -48,8 +65,6 @@ public class Recipe
                 .append("flavor", flavorList)
                 .append("region", this.region)
                 .append("ingredients", ingredientList);
-
-
     }
 
     @Override
@@ -60,13 +75,15 @@ public class Recipe
                 '}';
     }
 
-    // Debugging
+    /*-------------------Debug Tools-----------------*/
     public static void main (String[] args)
     {
+        // Test recipePrompt()
         /*Recipe recipe = recipePrompt();
         System.out.print(recipe);
         //System.out.print(recipe.documentify());*/
 
+        // Test documentify()
         Recipe test = new Recipe("Burger", Arrays.asList(new Ingredient("Beef", 1.5, "lb"),
                 new Ingredient("Buns", 1, "pack"),
                 new Ingredient("Cheese", 1, "slice")));
@@ -81,6 +98,7 @@ public class Recipe
         Scanner keyboard = new Scanner(System.in);
         String recipeName = keyboard.nextLine();
 
+        // TODO: Create prompt for region and flavor
         /*
         System.out.print("Flavor: ");
         keyboard.nextLine();
