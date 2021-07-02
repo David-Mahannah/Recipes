@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class Recipe
 {
+    // TODO: Add rating, likability, serving size,
+    //  cooking direction, dietary restrictions, preparation time ?
     private String name;
     private String region;
     private List<String> flavors;
