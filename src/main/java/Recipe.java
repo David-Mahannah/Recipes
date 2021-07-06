@@ -13,6 +13,11 @@ public class Recipe
         return null;
     }
 
+    public void setName (String s)
+    {
+        name = s;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
