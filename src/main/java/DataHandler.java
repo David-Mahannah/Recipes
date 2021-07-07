@@ -33,6 +33,7 @@ public class DataHandler
         return list.get(rand.nextInt(list.size()));
     }
 
+    //
     public List<Document> findRecipeByName(String s)
     {
         Bson filter = eq("recipe", s);
@@ -42,11 +43,12 @@ public class DataHandler
 
     public Document containsIngredient()
     {
-        Bson filter = ne("")
+        Bson filter = ne("", "");
+        return null;
     }
 
     public Document doesNotContainIngredient()
     {
-
+        return null;
     }
 }
