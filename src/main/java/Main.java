@@ -14,7 +14,7 @@ import java.util.Random;
 import static com.mongodb.client.model.Filters.*;
 
 public class Main {
-
+    // TODO: Make DataHandler
     public static Document randomGenByFilter(MongoCollection<Document> collection, Bson filter){
         Random rand = new Random();
         List<Document> list = collection.find(filter).into(new ArrayList<>());
@@ -42,7 +42,7 @@ public class Main {
         Recipe recipe = new Recipe("Pasta", Arrays.asList(new Ingredient("Veggie Patty", 1.5, "lb"),
                 new Ingredient("Buns", 1, "pack"),
                 new Ingredient("Cheese", 1, "slice")));
-        //System.out.println(recipe);
+        System.out.println(recipe);
 
         //Recipe recipe = Recipe.recipePrompt();
         // Insert Recipe
