@@ -14,7 +14,6 @@ import java.util.Random;
 import static com.mongodb.client.model.Filters.*;
 
 public class Main {
-
     public static Document randomGenByFilter(MongoCollection<Document> collection, Bson filter){
         Random rand = new Random();
         List<Document> list = collection.find(filter).into(new ArrayList<>());
