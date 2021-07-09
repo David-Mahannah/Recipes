@@ -19,15 +19,19 @@ public class DataHandler
     /* ------------ Functions ----------- */
 
 
-    // interface web form to mongodb query...
+    // interface web form to mongodb query
     // Pass null for parameters that arent being used in the search.
-    public List<Document> theSuperMegaFormMethod(String name, String flavor, String region)
+    // Assuming prep time is a range...
+    public List<Document> theSuperMegaFormMethod(String name, String flavor, String region, int prepTimeMin, int prepTimeMax, String[] ingredients)
     {
         Bson name_filter = null,
                 flavor_filter = null,
-                region_filter = null;
+                region_filter = null,
+                prepTimeMin_filter = null,
+                prepTimeMax_filter = null,
+                ingredients_filter = null;
 
-        Bson[] filters = new Bson[]{name_filter, flavor_filter, region_filter};
+        Bson[] filters = new Bson[]{name_filter, flavor_filter, region_filter, prepTimeMin_filter, prepTimeMax_filter};
 
         // Filters
         if (name != null) { // dunno if this is a redundancy...
@@ -35,7 +39,7 @@ public class DataHandler
         }
 
         if (flavor != null) {
-            lavor_filter = eq();
+            flavor_filter = eq();
         }
 
         if (region != null)
@@ -43,25 +47,28 @@ public class DataHandler
             region_filter = eq();
         }
 
-        if (prep_time_above != null)
-        {
-
-        }
-
-        if (prep_time_below != null)
-        {
-
-        }
+//        if (prepTimeMax != null)
+//        {
+//
+//        }
+//
+//        if (prepTimeMin != null)
+//        {
+//
+//        }
 
         // Smack them together
-        Bson finalFilter;
+        Bson finalFilter = name_filter;
         for (Bson filter : filters)
         {
             if (filter != null)
+            {
+                finalFilter = and(finalFilter, filter);
+            }
         }
-        Bson finalFilter = and(name, flavor, prepTime);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return null;
+//        Bson finalFilter = and(name, flavor, prepTime);
+        List<Document> list = collection.find(finalFilter).into(new ArrayList<>());
+        return list;
     }
 
     // Return a single recipe in Bson format that is randomly selected
@@ -93,7 +100,7 @@ public class DataHandler
     // Return all recipes that
     public List<Document> containsIngredient(String ingredient)
     {
-        Bson filter = ne("ingredients", ingredient);
+        Bson filter = all("ingredients", ingredient);
         List<Document> list = collection.find(filter).into(new ArrayList<>());
         return null;
     }
