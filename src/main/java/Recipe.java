@@ -11,32 +11,90 @@ public class Recipe
     // TODO: Add rating, likability, serving size,
     //  cooking direction, dietary restrictions, preparation time ?
     private String name;
+    private Double rating;
+    private Integer servingSize;
+    private Double preparationTime;
+    private List<String> dietaryRestrictions;
     private String region;
     private List<String> flavors;
     private List<Ingredient> ingredients;
+    private String directions;
 
-    /*-------------------Constructors-----------------*/
+    /*-------------------Initializers-----------------*/
     public Recipe(){
         name = null;
+        rating = -1.0;
+        servingSize = -1;
+        preparationTime = -1.0;
+        dietaryRestrictions = new ArrayList<>();
         region = null;
         flavors = new ArrayList<>();
         ingredients = new ArrayList<>();
+        directions = null;
     }
 
     public Recipe(String name, List<Ingredient> ingredients){
         this.name = name;
         this.ingredients = ingredients;
 
+        rating = -1.0;
+        servingSize = -1;
+        preparationTime = -1.0;
+        dietaryRestrictions = new ArrayList<>();
+        region = null;
+        flavors = new ArrayList<>();
+        directions = null;
+    }
+
+    public Recipe(String name, List<Ingredient> ingredients, String directions){
+        this.name = name;
+        this.ingredients = ingredients;
+        this.directions = directions;
+
+        rating = -1.0;
+        servingSize = -1;
+        preparationTime = -1.0;
+        dietaryRestrictions = new ArrayList<>();
         region = null;
         flavors = new ArrayList<>();
     }
 
-    public Recipe(String name, String region, List<String> flavors, List<Ingredient> ingredients){
+    public Recipe(String name, String region, double rating, int servingSize, double preparationTime, List<String> dietaryRestrictions,List<String> flavors, List<Ingredient> ingredients, String directions){
         this.name = name;
-        this.ingredients = ingredients;
-
-        this.flavors = flavors;
+        this.rating = rating;
+        this.servingSize = servingSize;
+        this.preparationTime = preparationTime;
+        this.dietaryRestrictions = dietaryRestrictions;
         this.region = region;
+        this.flavors = flavors;
+        this.ingredients = ingredients;
+        this.directions = directions;
+    }
+
+    /*-------------------Constructor Functions-----------------*/
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public void setServingSize(Integer servingSize) {
+        this.servingSize = servingSize;
+    }
+
+    public void setPreparationTime(Double preparationTime) {
+        this.preparationTime = preparationTime;
+    }
+
+    public void setDietaryRestrictions(List<String> dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public void setFlavors(List<String> flavors) {
+        this.flavors = flavors;
     }
 
     /*-------------------Functions-----------------*/
@@ -62,18 +120,38 @@ public class Recipe
             }
         }
 
+        // Create Document List of dietary restriction tags
+        List<org.bson.Document> dietRestrict = new ArrayList<>();
+        if (!dietaryRestrictions.isEmpty()){
+            for( String diet : this.dietaryRestrictions){
+                flavorList.add(new org.bson.Document("dietary_restriction", diet));
+            }
+        }
+
         // Return documentified recipe
         return new org.bson.Document("_id", new ObjectId()).append("recipe", this.name)
-                .append("flavor", flavorList)
+                .append("rating", this.rating)
+                .append("serving_size", this.servingSize)
+                .append("preparation_time", this.preparationTime)
+                .append("dietary_restrictions",dietRestrict)
                 .append("region", this.region)
-                .append("ingredients", ingredientList);
+                .append("flavor", flavorList)
+                .append("ingredients", ingredientList)
+                .append("cooking_directions", this.directions);
     }
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "name='" + name + '\'' +
-                ", Ingredients=" + ingredients +
+        return "Recipe{" + "\n" +
+                "\t" + "name= '" + name + '\'' + " ," + "\n" +
+                "\t" + "rating= '" + rating + '\'' + " ," + "\n" +
+                "\t" + "serving size= '" + servingSize + '\'' + " ," + "\n" +
+                "\t" + "preparation time= '" + preparationTime + '\'' + " ," + "\n" +
+                "\t" + "dietary restrictions= " + dietaryRestrictions + " ," + "\n" +
+                "\t" + "region= '" + region + '\'' + " ," + "\n" +
+                "\t" + "flavors= " + flavors + " ," + "\n" +
+                "\t" + "ingredients= " + ingredients + " ," + "\n" +
+                "\t" + "cooking directions= '" + directions + '\'' + "\n" +
                 '}';
     }
 

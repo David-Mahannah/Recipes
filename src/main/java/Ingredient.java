@@ -48,10 +48,10 @@ public class Ingredient
 
     @Override
     public String toString() {
-        return "Ingredient{" +
+        return "Ingredient{ " +
                 "name='" + name + '\'' +
                 ", amount=" + amount +
-                ", unit_of_measurement='" + unit_of_measurement + '\'' +
+                ", unit_of_measurement='" + unit_of_measurement + '\'' + " " +
                 '}';
     }
 }
