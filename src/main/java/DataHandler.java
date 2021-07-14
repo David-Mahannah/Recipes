@@ -9,7 +9,7 @@ import static com.mongodb.client.model.Filters.*;
 
 public class DataHandler
 {
-    MongoCollection<Document> collection;
+    private MongoCollection<Document> collection;
 
     public DataHandler (MongoCollection<Document> c)
     {
@@ -26,9 +26,12 @@ public class DataHandler
      * Used to interface web form inputs to mongodb query in a single method
      *
      * @param name The string name of a given recipe
+     * @param flavor The string name of a given flavor
+     * @param region The string name of a given region
+     * @param ingredients An array of ingredient names
      * @return      A list of recipes as BSON documents
      */
-    public List<Document> theSuperMegaFormMethod(String name, String flavor, String region, int prepTimeMin, int prepTimeMax, String[] ingredients)
+    public List<Document> findRecipe(String name, String flavor, String region,  String[] ingredients)
     {
         Bson name_filter = null,
                 flavor_filter = null,
