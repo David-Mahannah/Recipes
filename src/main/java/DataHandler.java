@@ -18,10 +18,16 @@ public class DataHandler
 
     /* ------------ Functions ----------- */
 
-
-    // interface web form to mongodb query
-    // Pass null for parameters that arent being used in the search.
-    // Assuming prep time is a range...
+    /**
+     * <b> UNTESTED </b>
+     * <br>
+     * Returns a list of recipes from the collection that match all non-null parameters
+     *
+     * Used to interface web form inputs to mongodb query in a single method
+     *
+     * @param name The string name of a given recipe
+     * @return      A list of recipes as BSON documents
+     */
     public List<Document> theSuperMegaFormMethod(String name, String flavor, String region, int prepTimeMin, int prepTimeMax, String[] ingredients)
     {
         Bson name_filter = null,
@@ -38,23 +44,13 @@ public class DataHandler
             name_filter = eq("recipe", name);
         }
 
-        if (flavor != null) {
-            flavor_filter = eq();
-        }
-
-        if (region != null)
-        {
-            region_filter = eq();
-        }
-
-//        if (prepTimeMax != null)
-//        {
-//
+//        if (flavor != null) {
+//            flavor_filter = eq();
 //        }
 //
-//        if (prepTimeMin != null)
+//        if (region != null)
 //        {
-//
+//            region_filter = eq();
 //        }
 
         // Smack them together
@@ -67,8 +63,7 @@ public class DataHandler
             }
         }
 //        Bson finalFilter = and(name, flavor, prepTime);
-        List<Document> list = collection.find(finalFilter).into(new ArrayList<>());
-        return list;
+        return collection.find(finalFilter).into(new ArrayList<>());
     }
 
     // Return a single recipe in Bson format that is randomly selected
@@ -89,69 +84,94 @@ public class DataHandler
         return list.get(rand.nextInt(list.size()));
     }
 
-    // Return all recipes that have a "recipe" label equal to name
+    /**
+     * <b> UNTESTED </b>
+     *<br>
+     * Returns a list of recipes from the collection that match the name passed.
+     *
+     * @param name The string name of a given recipe
+     * @return      A list of recipes as BSON documents
+     */
     public List<Document> findRecipeByName(String name)
     {
         Bson filter = eq("recipe", name);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return list;
+        return collection.find(filter).into(new ArrayList<>());
+
     }
 
-    // Return all recipes that
+
+    /**
+     * <b> UNTESTED </b>
+     *<br>
+     * Returns a list of recipes from the collection that contain the passed ingredient.
+     *
+     * @param ingredient The string name of a given ingredient
+     * @return      A list of recipes as BSON documents
+     */
     public List<Document> containsIngredient(String ingredient)
     {
-        Bson filter = all("ingredients", ingredient);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return null;
+        Bson filter = elemMatch("ingredients", eq("name", ingredient));
+        return collection.find(filter).into(new ArrayList<>());
+
     }
 
-    public List<Document> doesNotContainIngredient(String search_string)
+    /**
+     * <b> UNTESTED </b>
+     *<br>
+     * Returns a list of recipes from the collection that do not contain the passed ingredient.
+     *
+     * @param ingredient The string name of a given ingredient
+     * @return      A list of recipes as BSON documents
+     */
+    public List<Document> doesNotContainIngredient(String ingredient)
     {
-        return null;
+        Bson filter = elemMatch("ingredients", ne("name", ingredient));
+        return collection.find(filter).into(new ArrayList<>());
     }
 
+
+
+    /**
+     * <b> UNTESTED </b>
+     *<br>
+     * Returns a list of recipes from the collection that are from the specified region.
+     *
+     * @param region The string name of a given region
+     * @return      A list of recipes in BSON document
+     */
     public List<Document> fromRegion(String region)
     {
         Bson filter = eq("region", region);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return list;
+        return collection.find(filter).into(new ArrayList<>());
     }
 
-    // Returns List<Document> of all recipes that contain flavor
+    /**
+     * <b> UNTESTED </b>
+     * <br>
+     * Returns a list of recipes from the collection that do not contain the passed flavor.
+     *
+     * @param flavor The string name of a given flavor
+     * @return      A list of recipes as BSON documents
+     */
     public List<Document> isFlavor(String flavor)
     {
-        Bson filter = all("flavor", flavor);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return list;
+        Bson filter = elemMatch("flavor", eq(flavor));
+        return collection.find(filter).into(new ArrayList<>());
     }
 
-    // Returns List<Documents> of all recipes that contain all flavors
+    /**
+     * <b> UNTESTED </b>
+     * <br>
+     * Returns a list of recipes from the collection that contain all of the passed flavors.
+     *
+     * @param flavors The string names of a given flavor
+     * @return      A list of recipes as BSON documents
+     */
     public List<Document> hasFlavors(String... flavors)
     {
         Bson filter = all("flavor", flavors);
-        List<Document> list = collection.find(filter).into(new ArrayList<>());
-        return list;
+        return collection.find(filter).into(new ArrayList<>());
     }
 
-    public List<Document> ratingAbove(int rating)
-    {
-        Bson filter = // Do this
-        return list;
-    }
-
-    public List<Document> ratingBelow(int rating)
-    {
-        Bson filter = // Do this
-        return list;
-    }
-
-    public List<Document> prepTimeBelow(double minutes)
-    {
-
-    }
-
-    public List<Document> prepTimeAbove(double minutes)
-    {
-
-    }
+    // TODO create search methods for prep time and rating based on their implementation in Recipe class
 }
