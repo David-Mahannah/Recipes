@@ -1,26 +1,18 @@
+import Tools.RecipeMaker.RecipeBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+//import com.mongodb.client.MongoDatabase;
 import java.util.List;
-import java.util.Random;
-
-import static com.mongodb.client.model.Filters.*;
 
 public class Main {
     public static void main (String[] args)
     {
+        System.out.println("test");
         // Store connection string in user environment variables
         String connectionString = System.getenv("mongodb.uri");
-
-        System.out.println("test");
-
 
         // Login
         MongoClient mongoClient = MongoClients.create(connectionString);
@@ -28,10 +20,23 @@ public class Main {
         MongoCollection<Document> recipesCol = database.getCollection("Awesome Collection");
 
         // Recipe Test Case
-        Recipe recipe = new Recipe("Pasta", Arrays.asList(new Ingredient("Veggie Patty", 1.5, "lb"),
-                new Ingredient("Buns", 1, "pack"),
-                new Ingredient("Cheese", 1, "slice")));
-        System.out.println(recipe);
+//        Recipe recipe = new Recipe("Pasta", Arrays.asList(new Ingredient("Veggie Patty", 1.5, "lb"),
+//                new Ingredient("Buns", 1, "pack"),
+//                new Ingredient("Cheese", 1, "slice")));
+//        System.out.println(recipe);
+
+        // DataHandler Test Case
+        Document myDoc = recipesCol.find().first();
+        //System.out.println(myDoc.toJson());
+
+        DataHandler datahandler = new DataHandler(recipesCol);
+
+        List<Document> hasbeef = datahandler.containsIngredient("Beef");
+//       //datahandler.containsIngredient();
+        System.out.println("hasbeef:" + hasbeef);
+
+        RecipeBuilder r = new RecipeBuilder();
+//        datahandler.findRecipe();
 
         //Recipe recipe = Recipe.recipePrompt();
         // Insert Recipe

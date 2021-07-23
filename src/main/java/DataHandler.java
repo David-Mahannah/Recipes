@@ -36,25 +36,34 @@ public class DataHandler
         Bson name_filter = null,
                 flavor_filter = null,
                 region_filter = null,
-                prepTimeMin_filter = null,
-                prepTimeMax_filter = null,
                 ingredients_filter = null;
 
-        Bson[] filters = new Bson[]{name_filter, flavor_filter, region_filter, prepTimeMin_filter, prepTimeMax_filter};
+        Bson[] filters = new Bson[]{name_filter, flavor_filter, region_filter};
 
         // Filters
         if (name != null) { // dunno if this is a redundancy...
             name_filter = eq("recipe", name);
         }
 
-//        if (flavor != null) {
-//            flavor_filter = eq();
-//        }
-//
-//        if (region != null)
-//        {
-//            region_filter = eq();
-//        }
+        if (flavor != null) {
+            flavor_filter = elemMatch("flavor", eq(flavor));
+        }
+
+        if (region != null)
+        {
+            region_filter = eq("region", region);
+        }
+
+        // The painful one
+        if (ingredients != null)
+        {
+            Bson[] ingredients_filter_arr = new Bson[ingredients.length];
+            for (int i = 0; i < ingredients.length; i++)
+            {
+                ingredients_filter_arr[i] = elemMatch("ingredients", eq("name", ingredients[i]));
+            }
+            ingredients_filter = and(ingredients_filter_arr); // Combine all ingredient filters into one
+        }
 
         // Smack them together
         Bson finalFilter = name_filter;
@@ -115,7 +124,6 @@ public class DataHandler
     {
         Bson filter = elemMatch("ingredients", eq("name", ingredient));
         return collection.find(filter).into(new ArrayList<>());
-
     }
 
     /**
@@ -131,7 +139,6 @@ public class DataHandler
         Bson filter = elemMatch("ingredients", ne("name", ingredient));
         return collection.find(filter).into(new ArrayList<>());
     }
-
 
 
     /**
