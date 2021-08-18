@@ -1,4 +1,5 @@
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;
@@ -88,6 +89,11 @@ public class DataHandler
         return list.get(rand.nextInt(list.size()));
     }
 
+    public InsertOneResult addRecipe(Document d)
+    {
+        return collection.insertOne(d);
+    }
+
     // Return a randomly selected recipe inn Bson format
     public Document randomGen()
     {
@@ -97,7 +103,6 @@ public class DataHandler
     }
 
     /**
-     * <b> UNTESTED </b>
      *<br>
      * Returns a list of recipes from the collection that match the name passed.
      *
@@ -108,13 +113,10 @@ public class DataHandler
     {
         Bson filter = eq("recipe", name);
         return collection.find(filter).into(new ArrayList<>());
-
     }
 
 
     /**
-     * <b> UNTESTED </b>
-     *<br>
      * Returns a list of recipes from the collection that contain the passed ingredient.
      *
      * @param ingredient The string name of a given ingredient
@@ -127,7 +129,8 @@ public class DataHandler
     }
 
     /**
-     * <b> UNTESTED </b>
+     * <b> NOT WORKING </b>
+     * Doesn't exclude the passed string
      *<br>
      * Returns a list of recipes from the collection that do not contain the passed ingredient.
      *
@@ -142,7 +145,6 @@ public class DataHandler
 
 
     /**
-     * <b> UNTESTED </b>
      *<br>
      * Returns a list of recipes from the collection that are from the specified region.
      *

@@ -56,7 +56,7 @@ public class Recipe
 
         // Create Document List of flavor tags
         List<org.bson.Document> flavorList = new ArrayList<>();
-        if (!flavors.isEmpty()){
+        if (flavors != null && !flavors.isEmpty()){
             for( String flavor : this.flavors){
                 flavorList.add(new org.bson.Document("flavor",flavor));
             }

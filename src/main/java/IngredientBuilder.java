@@ -1,5 +1,3 @@
-package Tools.RecipeMaker;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,14 +8,14 @@ public class IngredientBuilder extends JDialog
     private Label lblName;
     private Label lblRegion;
     private Label lblUnit;
-    private TextField tfCount;
-    private TextField tfscd;
-    private TextField tfthd;
+    private TextField tfName;
+    private TextField tfAmount;
+    private TextField tfUnit;
     private Button btnCount;
 
-    public IngredientBuilder()
-    {
 
+    public IngredientBuilder(RecipeBuilder parent)
+    {
         // INGREDIENT DIALOG
         setTitle("New Ingredient");
         setModal(true);
@@ -40,6 +38,7 @@ public class IngredientBuilder extends JDialog
         {
             public void actionPerformed( ActionEvent e )
             {
+                parent.addIngredient(new Ingredient(tfName.getText(), Double.parseDouble(tfAmount.getText()), tfUnit.getText()));
                 setVisible(false);
             }
         });
@@ -52,27 +51,27 @@ public class IngredientBuilder extends JDialog
         top.setLayout(new GridLayout(1, 2));
         top.add(new Label("Name: "));
 
-        tfCount = new TextField();
-        tfCount.setEditable(true);
-        top.add(tfCount);
+        tfName = new TextField();
+        tfName.setEditable(true);
+        top.add(tfName);
 
         // SECOND
         Panel second = new Panel();
         second.setLayout(new GridLayout(1, 2));
-        lblRegion = new Label("Region ");
+        lblRegion = new Label("Amount ");
         second.add(lblRegion);
-        tfscd = new TextField();
-        tfscd.setEditable(true);
-        second.add(tfscd);
+        tfAmount = new TextField();
+        tfAmount.setEditable(true);
+        second.add(tfAmount);
 
         // THIRD
         Panel third = new Panel();
         third.setLayout(new GridLayout(1, 2));
         lblUnit = new Label("Unit");
         third.add(lblUnit);
-        tfthd = new TextField();
-        tfthd.setEditable(true);
-        third.add(tfthd);
+        tfUnit = new TextField();
+        tfUnit.setEditable(true);
+        third.add(tfUnit);
 
         add(top);
         add(second);

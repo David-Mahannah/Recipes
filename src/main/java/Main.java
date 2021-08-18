@@ -1,16 +1,18 @@
-import Tools.RecipeMaker.RecipeBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 //import com.mongodb.client.MongoDatabase;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    public static void main (String[] args)
-    {
-        System.out.println("test");
+    public static void main (String[] args) throws IOException {
+        // TODO
+        // Flavors array in RecipeBuilder
+        // Add Cooking directions to Recipes
+
         // Store connection string in user environment variables
         String connectionString = System.getenv("mongodb.uri");
 
@@ -19,11 +21,6 @@ public class Main {
         MongoDatabase database = mongoClient.getDatabase("Hugh-Mungus");
         MongoCollection<Document> recipesCol = database.getCollection("Awesome Collection");
 
-        // Recipe Test Case
-//        Recipe recipe = new Recipe("Pasta", Arrays.asList(new Ingredient("Veggie Patty", 1.5, "lb"),
-//                new Ingredient("Buns", 1, "pack"),
-//                new Ingredient("Cheese", 1, "slice")));
-//        System.out.println(recipe);
 
         // DataHandler Test Case
         Document myDoc = recipesCol.find().first();
@@ -32,10 +29,14 @@ public class Main {
         DataHandler datahandler = new DataHandler(recipesCol);
 
         List<Document> hasbeef = datahandler.containsIngredient("Beef");
-//       //datahandler.containsIngredient();
-        System.out.println("hasbeef:" + hasbeef);
 
-        RecipeBuilder r = new RecipeBuilder();
+        // Testing RecipeBuilder class
+        RecipeBuilder r = new RecipeBuilder(datahandler);
+
+       // List<Document> hasOnions = datahandler.containsIngredient("Onion");
+        // System.out.println(datahandler.doesNotContainIngredient("Onion"));
+       // System.out.println(datahandler.findRecipeByName("French Onion Soup"));
+        // System.out.println(hasOnions);
 //        datahandler.findRecipe();
 
         //Recipe recipe = Recipe.recipePrompt();
@@ -54,8 +55,6 @@ public class Main {
        /* Bson filter = eq("recipe", "Cheeseburger");
         DeleteResult result = recipesCol.deleteOne(filter);
         System.out.println(result);*/
-
-
 
         /*
          David's Database work here...
