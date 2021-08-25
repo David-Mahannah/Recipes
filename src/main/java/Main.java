@@ -6,6 +6,8 @@ import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +30,7 @@ public class Main {
         return list.get(rand.nextInt(list.size()));
     }
 
-    public static void main (String[] args)
-    {
+    public static void main (String[] args) throws IOException {
         // Store connection string in user environment variables
         String connectionString = System.getenv("mongodb.uri");
 
@@ -44,6 +45,9 @@ public class Main {
                 new Ingredient("Cheese", 1, "slice")));
         System.out.println(recipe);
 
+
+        DataHandler d = new DataHandler(recipesCol);
+        RecipeBuilder r = new RecipeBuilder(d);
         //Recipe recipe = Recipe.recipePrompt();
         // Insert Recipe
         //recipesCol.insertOne(recipe.documentify());
