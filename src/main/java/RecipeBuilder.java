@@ -130,12 +130,11 @@ public class RecipeBuilder extends Frame
 
     public void drawDefault()
     {
-        // TOP
         Panel top = new Panel();
         top.setLayout(new GridLayout(1, 2));
-        JLabel name = new JLabel("Name: ");
-        name.setHorizontalAlignment(JLabel.CENTER);
-        top.add(name);
+        JLabel lblname = new JLabel("Name: ");
+        lblname.setHorizontalAlignment(JLabel.CENTER);
+        top.add(lblname);
 
         tfCount = new TextField();
         tfCount.setEditable(true);
@@ -152,14 +151,10 @@ public class RecipeBuilder extends Frame
         tfscd.setEditable(true);
         second.add(tfscd);
 
+        tfCount.setText(name);
+        tfscd.setText(region);
         lblIngredients = new JLabel("Ingredients:");
         lblIngredients.setHorizontalAlignment(JLabel.CENTER);
-
-        Panel third = new Panel();
-        third.setSize(300, 100);
-        third.setLayout(new GridLayout(1, 2));
-        lblInstructions = new JLabel("Instructions");
-        lblInstructions.setHorizontalAlignment(JLabel.CENTER);
 
         JTextArea jt = new JTextArea(10, 10);
 
@@ -170,7 +165,22 @@ public class RecipeBuilder extends Frame
 
         add(top);
         add(second);
+
         add(jt);
+        add(lblIngredients);
+
+        boolean every_other = true;
+        for (Ingredient ing : ingredients)
+        {
+            Panel third = new Panel();
+            if (every_other) { third.setBackground(Color.GRAY); every_other=false; }
+            else {every_other=true;}
+            third.setLayout(new GridLayout(1, 3));
+            third.add(new Label(ing.getName()));
+            third.add(new Label(Double.toString(ing.getAmount())));
+            third.add(new Label(ing.getUnit_of_measurement()));
+            add(third);
+        }
 
         Panel fourth = new Panel();
         fourth.setLayout(new GridLayout(1, 3));
@@ -179,16 +189,22 @@ public class RecipeBuilder extends Frame
         btnCount = new JButton("Add Ingredient");   // construct the Button component
         btnCount.addActionListener(new AddIngredientListener());
 
+
         b.addActionListener ( new ActionListener()
         {
             public void actionPerformed( ActionEvent e )
             {
-                Recipe r = new Recipe(tfCount.getText(), ingredients, jt.getText());
-                Document d = r.documentify();
+                try {
+                    Recipe r = new Recipe(tfCount.getText(), ingredients, jt.getText());
+                    Document d = r.documentify();
 
-                InsertOneResult rdzc = datahandler.addRecipe(d);
-                System.out.println("SUCCESS:" + rdzc.wasAcknowledged());
-                setVisible(false);
+                    InsertOneResult rdzc = datahandler.addRecipe(d);
+                    System.out.println("SUCCESS:" + rdzc.wasAcknowledged());
+                    setVisible(false);
+                } catch (Exception ex) {
+                    System.out.println("Broke :/");
+                    setVisible(false);
+                }
             }
         });
 
@@ -198,7 +214,7 @@ public class RecipeBuilder extends Frame
         add(fourth);
 
         this.setTitle("Recipe Maker");
-        this.setSize(300, 300);
+        this.setSize(300, 200+(15*rows));
         this.setResizable(false);
         this.setVisible(true);
     }
@@ -210,10 +226,9 @@ public class RecipeBuilder extends Frame
 
         // INGREDIENT DIALOG
         d = new IngredientBuilder(this);
-        rows = 4;
+        rows = 5;
         cols = 1;
         setLayout(new GridLayout(rows, cols, 10, 10));
-        rows++;
 
         drawDefault();
 //        // TOP
