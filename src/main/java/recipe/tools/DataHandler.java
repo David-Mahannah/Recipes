@@ -1,4 +1,9 @@
+package recipe.tools;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -12,15 +17,34 @@ public class DataHandler
 {
     private MongoCollection<Document> collection;
 
-    public DataHandler (MongoCollection<Document> c)
+    /**
+     * Used to easily query and insert MongoDB easily.
+     * Debug mode adds and queries from the Hugh-Mungus collection while non-Debug queries from Recipes
+     *
+     * @param debug change and read the debug collection instead?
+     * @return      Instance of RecipeTools.Tools.DataHandler
+     */
+    public DataHandler (boolean debug)
     {
-        collection = c;
+        String connectionString = System.getenv("mongodb.uri");
+        if (debug)
+        {
+            // Store connection string in user environment variables
+            MongoClient mongoClient = MongoClients.create(connectionString);
+            MongoDatabase database = mongoClient.getDatabase("Hugh-Mungus");
+            MongoCollection<Document> recipesCol = database.getCollection("Awesome Collection");
+        } else {
+            // Store connection string in user environment variables
+            MongoClient mongoClient = MongoClients.create(connectionString);
+            MongoDatabase database = mongoClient.getDatabase("Recipes");
+            MongoCollection<Document> recipesCol = database.getCollection("All_Recipes");
+        }
     }
 
     /* ------------ Functions ----------- */
 
     /**
-     * <b> UNTESTED </b>
+     * <b> UNTESTED and UNFINISHED </b>
      * <br>
      * Returns a list of recipes from the collection that match all non-null parameters
      *
@@ -185,5 +209,5 @@ public class DataHandler
         return collection.find(filter).into(new ArrayList<>());
     }
 
-    // TODO create search methods for prep time and rating based on their implementation in Recipe class
+    // TODO create search methods for prep time and rating based on their implementation in RecipeTools.util.Recipe class
 }

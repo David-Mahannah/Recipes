@@ -1,3 +1,7 @@
+package recipe.tools;
+
+import recipe.util.Ingredient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +21,7 @@ public class IngredientBuilder extends JDialog
     public IngredientBuilder(RecipeBuilder parent)
     {
         // INGREDIENT DIALOG
-        setTitle("New Ingredient");
+        setTitle("New RecipeTools.util.Ingredient");
         setModal(true);
         //d = new JDialog(this, "Dialog Example", true);
         setLayout(new GridLayout(4, 1));
@@ -82,7 +86,7 @@ public class IngredientBuilder extends JDialog
         add(buttonsPanel);
         setSize(300,300);
 
-//        this.setTitle("Recipe Maker");
+//        this.setTitle("RecipeTools.util.Recipe Maker");
 //        this.setSize(250, 150);
 //        this.setResizable(false);
 //        this.setVisible(true);

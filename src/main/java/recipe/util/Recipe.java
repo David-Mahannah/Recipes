@@ -1,3 +1,5 @@
+package recipe.util;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -8,8 +10,6 @@ import java.util.Scanner;
 
 public class Recipe
 {
-    // TODO: Add rating, likability, serving size,
-    //  cooking direction, dietary restrictions, preparation time ?
     private String name;
     private Double rating;
     private Integer servingSize;
@@ -59,7 +59,7 @@ public class Recipe
         flavors = new ArrayList<>();
     }
 
-    public Recipe(String name, String region, double rating, int servingSize, double preparationTime, List<String> dietaryRestrictions,List<String> flavors, List<Ingredient> ingredients, String directions){
+    public Recipe(String name, String region, double rating, int servingSize, double preparationTime, List<String> dietaryRestrictions, List<String> flavors, List<Ingredient> ingredients, String directions){
         this.name = name;
         this.rating = rating;
         this.servingSize = servingSize;
@@ -99,7 +99,7 @@ public class Recipe
 
     /*-------------------Functions-----------------*/
 
-    // Convert Recipe object to Document type to store in database
+    // Convert RecipeTools.util.Recipe object to Document type to store in database
     public Document documentify()
     {
         // Create Document List of ingredients
@@ -122,9 +122,10 @@ public class Recipe
 
         // Create Document List of dietary restriction tags
         List<org.bson.Document> dietRestrict = new ArrayList<>();
+        System.out.println(dietaryRestrictions);
         if (!dietaryRestrictions.isEmpty()){
             for( String diet : this.dietaryRestrictions){
-                flavorList.add(new org.bson.Document("dietary_restriction", diet));
+                dietRestrict.add(new org.bson.Document("dietary_restriction", diet));
             }
         }
 
@@ -142,7 +143,7 @@ public class Recipe
 
     @Override
     public String toString() {
-        return "Recipe{" + "\n" +
+        return "RecipeTools.util.Recipe{" + "\n" +
                 "\t" + "name= '" + name + '\'' + " ," + "\n" +
                 "\t" + "rating= '" + rating + '\'' + " ," + "\n" +
                 "\t" + "serving size= '" + servingSize + '\'' + " ," + "\n" +
@@ -159,7 +160,7 @@ public class Recipe
     public static void main (String[] args)
     {
         // Test recipePrompt()
-        /*Recipe recipe = recipePrompt();
+        /*RecipeTools.util.Recipe recipe = recipePrompt();
         System.out.print(recipe);
         //System.out.print(recipe.documentify());*/
 
@@ -174,7 +175,7 @@ public class Recipe
     // Debugging tool to create a recipe
     public static Recipe recipePrompt()
     {
-        System.out.print("Recipe Name: ");
+        System.out.print("RecipeTools.util.Recipe Name: ");
         Scanner keyboard = new Scanner(System.in);
         String recipeName = keyboard.nextLine();
 
@@ -194,7 +195,7 @@ public class Recipe
 
         while (true)
         {
-            System.out.print("Ingredient name (or 'x' to quit): ");
+            System.out.print("RecipeTools.util.Ingredient name (or 'x' to quit): ");
             name = keyboard.nextLine();
             if (name.equals("x"))
             {
@@ -208,6 +209,6 @@ public class Recipe
 
             ingredients.add(new Ingredient(name, amount, unit));
         }
-        return new Recipe(recipeName, ingredients);//Recipe(); // make a Recipe constructor
+        return new Recipe(recipeName, ingredients);//RecipeTools.util.Recipe(); // make a RecipeTools.util.Recipe constructor
     }
 }
