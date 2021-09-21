@@ -1,3 +1,5 @@
+package recipe.util;
+
 import java.util.Objects;
 
 public class Ingredient
@@ -48,7 +50,7 @@ public class Ingredient
 
     @Override
     public String toString() {
-        return "Ingredient{ " +
+        return "RecipeTools.util.Ingredient{ " +
                 "name='" + name + '\'' +
                 ", amount=" + amount +
                 ", unit_of_measurement='" + unit_of_measurement + '\'' + " " +
